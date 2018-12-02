@@ -1,5 +1,3 @@
-import javafx.util.Pair;
-
 public class GeographicalCoords {
     public double lat;
     public double lon;

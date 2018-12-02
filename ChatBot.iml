@@ -232,5 +232,9 @@
         <SOURCES />
       </library>
     </orderEntry>
+    <orderEntry type="library" name="org.junit.jupiter:junit-jupiter-api:5.3.1" level="project" />
+    <orderEntry type="library" name="com.esotericsoftware.yamlbeans:yamlbeans:1.13" level="project" />
+    <orderEntry type="library" name="com.fasterxml.jackson.jr:jackson-jr-objects:2.9.0" level="project" />
+    <orderEntry type="library" name="org.jsoup:jsoup:1.8.3" level="project" />
   </component>
 </module>
