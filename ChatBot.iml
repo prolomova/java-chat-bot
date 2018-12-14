@@ -236,5 +236,14 @@
     <orderEntry type="library" name="com.esotericsoftware.yamlbeans:yamlbeans:1.13" level="project" />
     <orderEntry type="library" name="com.fasterxml.jackson.jr:jackson-jr-objects:2.9.0" level="project" />
     <orderEntry type="library" name="org.jsoup:jsoup:1.8.3" level="project" />
+    <orderEntry type="module-library" exported="">
+      <library>
+        <CLASSES>
+          <root url="jar://$USER_HOME$/Downloads/postgis-jdbc-2.1.7.2.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
   </component>
 </module>

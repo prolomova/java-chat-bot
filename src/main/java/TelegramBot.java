@@ -10,6 +10,7 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKe
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardRow;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
+import java.io.File;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -28,6 +29,7 @@ public class TelegramBot extends TelegramLongPollingBot {
     TelegramBot(DefaultBotOptions botOptions) {
         super(botOptions);
         var tests = new ArrayList<Pair<String, Class<? extends IGame>>>();
+        tests.add(new Pair<>("quest.yml", QuestGame.class));
         chatBot = new ChatBot(new GameFactory(), tests);
         try {
             BOT_USERNAME = System.getenv("BOT_USERNAME");
@@ -52,7 +54,10 @@ public class TelegramBot extends TelegramLongPollingBot {
     @Override
     public void onUpdateReceived(Update update) {
         try {
-            ChatBotReply reply = chatBot.answer(update.getMessage().getText(),
+            var text = update.getMessage().getText();
+            if (text == null)
+                text = "";
+            ChatBotReply reply = chatBot.answer(text, update.getMessage().getLocation(),
                     update.getMessage().getFrom().getId());
 
             var sendMessage = new SendMessage(
@@ -65,25 +70,17 @@ public class TelegramBot extends TelegramLongPollingBot {
             else
                 sendMessage.setReplyMarkup(noKeyboard);
 
-            if (reply.imageUrl != null && reply.characterName != null)
+            if (reply.imageUrl != null)
             {
                 var sendPhoto = new SendPhoto();
                 sendPhoto.setChatId(update.getMessage().getChatId());
-                sendPhoto.setPhoto(reply.imageUrl);
+                sendPhoto.setPhoto(new File(reply.imageUrl));
 
                 InlineKeyboardMarkup inlineMarkup = new InlineKeyboardMarkup();
                 List<List<InlineKeyboardButton>> inlineRows = new ArrayList<>();
                 List<InlineKeyboardButton> row = new ArrayList<>();
-                row.add(new InlineKeyboardButton()
-                        .setText("Рассказать в VK")
-                        .setUrl(String.format(vkShareUrl,
-                                URLEncoder.encode("https://t.me/winxx_bot", StandardCharsets.UTF_8),
-                                URLEncoder.encode(String.format("Я - %s из Winx. А ты?", reply.characterName),
-                                        StandardCharsets.UTF_8),
-                                URLEncoder.encode(reply.imageUrl, StandardCharsets.UTF_8))));
                 inlineRows.add(row);
                 inlineMarkup.setKeyboard(inlineRows);
-                sendPhoto.setReplyMarkup(inlineMarkup);
 
                 execute(sendPhoto);
             }

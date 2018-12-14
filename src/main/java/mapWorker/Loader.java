@@ -23,7 +23,7 @@ public class Loader {
     private static final String OPENSTREETMAP_API_06 =
             "https://www.openstreetmap.org/api/0.6/map?bbox=";
 
-    public static Document getXML(double lon, double lat, double vicinityRange) {
+    public static void loadOSM(double lon, double lat, double vicinityRange) {
         try{
             var format = new DecimalFormat("##0.0000000", DecimalFormatSymbols.getInstance(Locale.ENGLISH));
             var left = format.format(lat - vicinityRange);
@@ -35,13 +35,11 @@ public class Loader {
             System.setProperty("java.net.useSystemProxies", "true");
             var osmUrl = new URL(url);
             var connection = (HttpURLConnection) osmUrl.openConnection();
-            var docBuilderFactory = DocumentBuilderFactory.newInstance();
-            var docBuilder = docBuilderFactory.newDocumentBuilder();
             var input = connection.getInputStream();
-            return docBuilder.parse(input, "");
-        } catch(SAXException | IOException | ParserConfigurationException e) {
+            var outputStream = new FileOutputStream(new File(".\\tmp\\map.osm"));
+            outputStream.write(input.readAllBytes());
+        } catch(IOException e) {
             e.printStackTrace();
         }
-        return null;
     }
 }
