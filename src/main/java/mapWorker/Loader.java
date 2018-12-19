@@ -23,20 +23,20 @@ public class Loader {
     private static final String OPENSTREETMAP_API_06 =
             "https://www.openstreetmap.org/api/0.6/map?bbox=";
 
-    public static void loadOSM(double lon, double lat, double vicinityRange) {
+    public static void loadOSM(double lon, double lat, double vicinityRange, String userId) {
         try{
             var format = new DecimalFormat("##0.0000000", DecimalFormatSymbols.getInstance(Locale.ENGLISH));
-            var left = format.format(lat - vicinityRange);
-            var bottom = format.format(lon - vicinityRange);
-            var right = format.format(lat + vicinityRange);
-            var top = format.format(lon + vicinityRange);
+            var bottom = format.format(lat - vicinityRange);
+            var left = format.format(lon - vicinityRange);
+            var top = format.format(lat + vicinityRange);
+            var right = format.format(lon + vicinityRange);
 
             var url = OPENSTREETMAP_API_06 + left + "," + bottom + "," + right + "," + top;
             System.setProperty("java.net.useSystemProxies", "true");
             var osmUrl = new URL(url);
             var connection = (HttpURLConnection) osmUrl.openConnection();
             var input = connection.getInputStream();
-            var outputStream = new FileOutputStream(new File(".\\tmp\\map.osm"));
+            var outputStream = new FileOutputStream(new File(".\\tmp\\map" + userId + ".osm"));
             outputStream.write(input.readAllBytes());
         } catch(IOException e) {
             e.printStackTrace();

@@ -57,7 +57,9 @@ public class TelegramBot extends TelegramLongPollingBot {
             var text = update.getMessage().getText();
             if (text == null)
                 text = "";
-            ChatBotReply reply = chatBot.answer(text, update.getMessage().getLocation(),
+            var loc = update.getMessage().getLocation();
+            ChatBotReply reply = chatBot.answer(text,
+                    loc,
                     update.getMessage().getFrom().getId());
 
             var sendMessage = new SendMessage(
@@ -75,16 +77,18 @@ public class TelegramBot extends TelegramLongPollingBot {
                 var sendPhoto = new SendPhoto();
                 sendPhoto.setChatId(update.getMessage().getChatId());
                 sendPhoto.setPhoto(new File(reply.imageUrl));
-
-                InlineKeyboardMarkup inlineMarkup = new InlineKeyboardMarkup();
-                List<List<InlineKeyboardButton>> inlineRows = new ArrayList<>();
-                List<InlineKeyboardButton> row = new ArrayList<>();
-                inlineRows.add(row);
-                inlineMarkup.setKeyboard(inlineRows);
-
                 execute(sendPhoto);
             }
             execute(sendMessage);
+            if (reply.nextImg != null)
+            {
+                var sendPhoto = new SendPhoto();
+                sendPhoto.setChatId(update.getMessage().getChatId());
+                sendPhoto.setPhoto(new File(reply.nextImg));
+
+                execute(sendPhoto);
+                //new File(reply.nextImg).delete();
+            }
         } catch (TelegramApiException e) {
             e.printStackTrace();
         }

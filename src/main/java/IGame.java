@@ -8,5 +8,4 @@ public interface IGame {
     void markActive(int userId);
     void markInactive(int userId);
 
-    boolean isActive(int userId);
-}
+    boolean isActive(int userId);}

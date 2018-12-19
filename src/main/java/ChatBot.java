@@ -17,7 +17,6 @@ class ChatBot {
     }
 
     ChatBotReply answer(String message, Location location, int userId) {
-        System.out.println(message);
         if (message.equals("Да")) curTest++;
         if ("/start".equals(message) || "Старт".equals(message)) curTest = 0;
         switch (message) {
@@ -28,7 +27,7 @@ class ChatBot {
                 gameInstance.markActive(userId);
                 ChatBotReply firstQuestion = gameInstance.proceedRequest(null, userId);
                 return new ChatBotReply(gameInstance.getInitialMessage(userId) +
-                        '\n' + firstQuestion.message, firstQuestion.keyboardOptions);
+                        '\n' + firstQuestion.message, firstQuestion.keyboardOptions, firstQuestion.imageUrl);
             case "/stop":
             case "Стоп":
             case "Нет":
@@ -45,7 +44,7 @@ class ChatBot {
                         var buttons = new ArrayList<String>();
                         buttons.add("Да");
                         buttons.add("Нет");
-                        return new ChatBotReply(reply.message + "\nХочешь пройти следующий тест?", buttons, reply.imageUrl);
+                        return new ChatBotReply(reply.message + "\nХочешь пройти следующий тест?", buttons, null, reply.imageUrl);
                     }
                 }
                 else

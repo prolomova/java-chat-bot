@@ -102,7 +102,6 @@ public class DatabaseWorker {
 
             PreparedStatement stmt = c.prepareStatement(query);
             stmt.setInt(1, userId);
-            System.out.println(query);
             stmt.executeUpdate();
             stmt.close();
         }
